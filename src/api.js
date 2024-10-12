@@ -33,24 +33,30 @@
  * @param {string} query
  * @returns {Promise<AICSearchResponse>}
  */
-export function searchArtworks(query) {
+export async function searchArtworks(query) {
 	/**
 	 * Get data from `ARTWORKS_SEARCH_RESULT.json`, whuch is served by our
 	 * local server.
 	 * TODO: replace with path to `/artworks/search/` endpoint,
 	 * as described in README.md.
 	 */
-	const requestUrl = `./ARTWORKS_SEARCH_RESULT.json`;
 
+	// Define the API endpoint with the user's query
+	const requestUrl = `https://www.artic.edu/api/v1/artworks/search?q=${encodeURIComponent(query)}`;
 	/**
 	 * We know the API serves JSON data, but
 	 * it's a good idea to explicitly request JSON anyway.
 	 * */
 	const headers = { Accept: 'application/json' };
-
-	return fetch(requestUrl, { headers }).then((res) => {
-		if (res.ok) {
-			return res.json();
-		}
-	});
+	try {
+		// Fetching data from the API
+		const response = await fetch(requestUrl, { headers });
+		// Check the fetch response
+		if (!response.ok) throw new Error('Network response was not ok');
+		// Parse and return the Json data
+		return response.json();
+	} catch (error) {
+		console.error('Error fetching artworks:', error);
+		throw error; //Rethrew the error for further handling
+	}
 }
