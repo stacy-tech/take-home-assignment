@@ -42,7 +42,7 @@ export async function searchArtworks(query) {
 	 */
 
 	// Define the API endpoint with the user's query
-	const requestUrl = `https://www.artic.edu/api/v1/artworks/search?q=${encodeURIComponent(query)}`;
+	const requestUrl = `https://api.artic.edu/api/v1/artworks/search?q=${encodeURIComponent(query)}&query[term][is_public_domain]=true&fields=artist_title,date_display,image_id,thumbnail.alt_text,thumbnail.width,thumbnail.height,title`;
 	/**
 	 * We know the API serves JSON data, but
 	 * it's a good idea to explicitly request JSON anyway.
